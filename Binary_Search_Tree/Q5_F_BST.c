@@ -2,8 +2,8 @@
 
 /* CE1007/CZ1007 Data Structures
 Lab Test: Section F - Binary Search Trees Questions
-Purpose: Implementing the required functions for Question 5 */
-
+Purpose: Implementing the required functions for Question 5
+		 Implementing 'remove node' operation for BST*/
 //////////////////////////////////////////////////////////////////////////////////
 
 #include <stdio.h>
@@ -39,6 +39,7 @@ BSTNode *pop(Stack *s);
 BSTNode *peek(Stack *s);
 int isEmpty(Stack *s);
 void removeAll(BSTNode **node);
+void removeNodeFromTree(BSTNode *root, int value);
 
 ///////////////////////////// main() /////////////////////////////////////////////
 
@@ -93,6 +94,10 @@ void postOrderIterativeS2(BSTNode *root)
 	 /* add your code here */
 }
 
+void removeNodeFromTree(BSTNode *root, int value)
+{
+	/* add your code here */
+}
 ///////////////////////////////////////////////////////////////////////////////
 
 void insertBSTNode(BSTNode **node, int value){
