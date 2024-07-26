@@ -33,6 +33,7 @@ void printList(LinkedList *ll);
 void removeAllItems(LinkedList *ll);
 ListNode * findNode(LinkedList *ll, int index);
 int insertNode(LinkedList *ll, int index, int value);
+int insertNodeEnd(LinkedList *ll, int value);
 int removeNode(LinkedList *ll, int index);
 
 //////////////////////////// main() //////////////////////////////////////////////
@@ -86,7 +87,24 @@ int main()
 
 void moveOddItemsToBack(LinkedList *ll)
 {
-	/* add your code here */
+	int size = ll->size;
+	ListNode* cur = ll->head;
+	int id = 0;
+	for(int i = 0; i < size; i++)
+	{
+		if(cur->item %2 == 0)
+		{
+			cur = cur->next;
+		}
+		else
+		{
+			insertNodeEnd(ll, cur->item);
+			cur = cur->next;
+			removeNode(ll,id);
+			id--;
+		}
+		id++;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -178,6 +196,36 @@ int insertNode(LinkedList *ll, int index, int value){
 	return -1;
 }
 
+int insertNodeEnd(LinkedList *ll, int value){
+
+	ListNode *pre;
+
+	if (ll == NULL)
+		return -1;
+
+	// If empty list or inserting first node, need to update head pointer
+	if (ll->head == NULL){
+		ll->head = malloc(sizeof(ListNode));
+		ll->head->item = value;
+		ll->head->next = NULL;
+		ll->size++;
+		return 0;
+	}
+
+
+	// Find the nodes before and at the target position
+	// Create a new node and reconnect the links
+	pre = ll->head;
+	while (pre->next != NULL)
+	{
+		pre = pre->next;
+	}
+	pre->next = malloc(sizeof(ListNode));
+	pre->next->item = value;
+	pre->next->next = NULL;
+	ll->size++;
+	return 0;
+}
 
 int removeNode(LinkedList *ll, int index){
 

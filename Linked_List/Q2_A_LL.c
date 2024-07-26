@@ -33,6 +33,7 @@ void printList(LinkedList *ll);
 void removeAllItems(LinkedList *ll);
 ListNode *findNode(LinkedList *ll, int index);
 int insertNode(LinkedList *ll, int index, int value);
+int insertNodeEnd(LinkedList *ll, int value);
 int removeNode(LinkedList *ll, int index);
 
 
@@ -104,6 +105,38 @@ int main()
 void alternateMergeLinkedList(LinkedList *ll1, LinkedList *ll2)
 {
     /* add your code here */
+	LinkedList* newll = (LinkedList*)malloc(sizeof(LinkedList));
+	
+	insertNodeEnd(newll, ll1->head->item);
+	
+	ListNode* cur1 = ll1->head->next;
+	ListNode* cur2 = ll2->head;
+	while(cur1!= NULL && cur2!=NULL)
+	{
+		insertNodeEnd(newll, cur2->item);
+		insertNodeEnd(newll, cur1->item);
+		cur1 = cur1->next;
+		cur2 = cur2->next;
+	}
+	if(cur1 == NULL)
+	{
+		while (cur2!=NULL)
+		{
+			insertNodeEnd(newll, cur2->item);
+			cur2 = cur2->next;
+		}
+	}
+	else if(cur2 == NULL)
+	{
+		while (cur1!=NULL)
+		{
+			insertNodeEnd(newll, cur1->item);
+			cur1 = cur1->next;
+		}
+	}
+	removeAllItems(ll1);
+	ll1->head = newll->head;
+	removeAllItems(ll2);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -193,6 +226,36 @@ int insertNode(LinkedList *ll, int index, int value){
 	}
 
 	return -1;
+}
+int insertNodeEnd(LinkedList *ll, int value){
+
+	ListNode *pre;
+
+	if (ll == NULL)
+		return -1;
+
+	// If empty list or inserting first node, need to update head pointer
+	if (ll->head == NULL){
+		ll->head = malloc(sizeof(ListNode));
+		ll->head->item = value;
+		ll->head->next = NULL;
+		ll->size++;
+		return 0;
+	}
+
+
+	// Find the nodes before and at the target position
+	// Create a new node and reconnect the links
+	pre = ll->head;
+	while (pre->next != NULL)
+	{
+		pre = pre->next;
+	}
+	pre->next = malloc(sizeof(ListNode));
+	pre->next->item = value;
+	pre->next->next = NULL;
+	ll->size++;
+	return 0;
 }
 
 
