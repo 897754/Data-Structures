@@ -91,15 +91,12 @@ int insertSortedLL(LinkedList *ll, int item)
 {
 	ListNode *next, *cur;
 
-	if (ll == NULL)
-		return -1;
+	if (ll == NULL)	return -1;
+	if (ll->head != NULL  && ll->head->item == item)	return -1;
 
-	if (ll->head != NULL  && ll->head->item == item)
-	{
-		return -1;
-	}
 	// If empty list or inserting first node, need to update head pointer
-	if (ll->head == NULL || ll->head->item > item){
+	if (ll->head == NULL || ll->head->item > item)
+	{
 		cur = ll->head;
 		ll->head = malloc(sizeof(ListNode));
 		ll->head->item = item;
@@ -109,21 +106,14 @@ int insertSortedLL(LinkedList *ll, int item)
 	}
 	int count = 1;
 	cur = ll->head;
-	while (cur->next != NULL)
+	while (1)
 	{
-		// 중복 체크
-		if(cur->next->item == item)
-		{
-			return -1;
-		}
-		// 다음 노드의 밸류가 넣을 값보다 커졌을 경우
-		if (cur->next->item > item)
-		{
-			break;
-		}
+		if(cur->next == NULL || cur->next->item > item)	break;
+		if(cur->next->item == item) return -1;
 		count++;
 		cur = cur->next;
 	}
+
 	next = cur->next;
 	cur->next = malloc(sizeof(ListNode));
 	cur->next->item = item;

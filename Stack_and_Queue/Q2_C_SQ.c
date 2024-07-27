@@ -91,8 +91,8 @@ int main()
 			removeEvenValues(&s); // You need to code this function
 			printf("The resulting stack after removing even integers is: ");
 			printList(&(s.ll));
-			removeAllItemsFromStack(&s);
-			removeAllItems(&ll);
+			// removeAllItemsFromStack(&s);
+			// removeAllItems(&ll);
 			break;
 		case 0:
 			removeAllItemsFromStack(&s);
@@ -114,11 +114,36 @@ int main()
 void createStackFromLinkedList(LinkedList *ll, Stack *s)
 {
     /* add your code here */
+	removeAllItemsFromStack(s);
+
+	ListNode *cur = ll->head;
+
+	while(cur!=NULL)
+	{
+		push(s, cur->item);
+		cur = cur->next;
+	}
 }
 
 void removeEvenValues(Stack *s)
 {
 	/* add your code here */
+	LinkedList* ll = (LinkedList*)malloc(sizeof(LinkedList));
+	ll->size = 0;
+	ll->head = NULL;
+
+	while (s->ll.size > 0)
+	{
+		int val = pop(s);
+		if(val%2 == 0)
+		{
+			insertNode(ll,ll->size,val);
+		}
+	}
+	s->ll.head = ll->head;
+	s->ll.size = ll->size;
+
+	free(ll);
 }
 
 //////////////////////////////////////////////////////////////////////////////////

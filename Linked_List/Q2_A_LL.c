@@ -106,27 +106,21 @@ void alternateMergeLinkedList(LinkedList *ll1, LinkedList *ll2)
 {
     /* add your code here */
 	LinkedList* newll = (LinkedList*)malloc(sizeof(LinkedList));
+	newll->head = NULL;
+	newll->size = 0;
 	
-	insertNodeEnd(newll, ll1->head->item);
 	
-	ListNode* cur1 = ll1->head->next;
+	ListNode* cur1 = ll1->head;
 	ListNode* cur2 = ll2->head;
 	while(cur1!= NULL && cur2!=NULL)
 	{
-		insertNodeEnd(newll, cur2->item);
 		insertNodeEnd(newll, cur1->item);
+		insertNodeEnd(newll, cur2->item);
 		cur1 = cur1->next;
 		cur2 = cur2->next;
+		removeNode(ll2,0);
 	}
-	if(cur1 == NULL)
-	{
-		while (cur2!=NULL)
-		{
-			insertNodeEnd(newll, cur2->item);
-			cur2 = cur2->next;
-		}
-	}
-	else if(cur2 == NULL)
+	if(cur2 == NULL)
 	{
 		while (cur1!=NULL)
 		{
@@ -136,7 +130,6 @@ void alternateMergeLinkedList(LinkedList *ll1, LinkedList *ll2)
 	}
 	removeAllItems(ll1);
 	ll1->head = newll->head;
-	removeAllItems(ll2);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
