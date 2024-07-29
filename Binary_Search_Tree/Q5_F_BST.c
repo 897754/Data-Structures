@@ -54,12 +54,13 @@ int main()
 
 	printf("1: Insert an integer into the binary search tree;\n");
 	printf("2: Print the post-order traversal of the binary search tree;\n");
+	printf("3: Remove an integer from the binary search tree;\n");
 	printf("0: Quit;\n");
 
 
 	while (c != 0)
 	{
-		printf("Please input your choice(1/2/0): ");
+		printf("Please input your choice(1/2/3/0): ");
 		scanf("%d", &c);
 
 		switch (c)
@@ -71,6 +72,13 @@ int main()
 			break;
 		case 2:
 			printf("The resulting post-order traversal of the binary search tree is: ");
+			postOrderIterativeS2(root); // You need to code this function
+			printf("\n");
+			break;
+		case 3:
+			printf("Input an integer that you want to remove from the Binary Search Tree: ");
+			scanf("%d", &i);
+			root = removeNodeFromTree(root, i);
 			postOrderIterativeS2(root); // You need to code this function
 			printf("\n");
 			break;
@@ -91,14 +99,94 @@ int main()
 
 void postOrderIterativeS2(BSTNode *root)
 {
-	 /* add your code here */
+	Stack s, r;
+	s.top = NULL;
+	r.top = NULL;
+	push(&s,root);
+	BSTNode *cur = root;
+	BSTNode *temp = NULL;
+	
+	while (1)
+	{
+		cur = pop(&s);
+		if(cur == NULL)	break;
+		push(&r, cur);
+
+		if(cur->left != NULL)
+		{
+			temp = cur->left;
+			push(&s, temp);
+			cur->left = NULL;
+		}
+		if(cur->right != NULL)
+		{
+			temp = cur->right;
+			push(&s, temp);
+			cur->right = NULL;
+		}
+	}
+	while (1)
+	{
+		cur = pop(&r);
+		if (cur == NULL)	break;
+		printf("%d ", cur->item);
+	}
+	
 }
 
 /* Given a binary search tree and a key, this function
    deletes the key and returns the new root. Make recursive function. */
 BSTNode* removeNodeFromTree(BSTNode *root, int value)
 {
-	/* add your code here */
+	if(root ==NULL) return NULL;
+
+	if(root->item == value)
+	{
+		if(root->left == NULL)
+		{
+			BSTNode* ret = root->right;
+			free(root);
+			return ret;
+		}
+		if(root->right == NULL)
+		{
+			BSTNode* ret = root->left;
+			free(root);
+			return ret;
+		}
+		int flag = 0;
+		BSTNode* cur = root->left;
+		BSTNode* pre = root;
+		while (cur->right != NULL)
+		{
+			flag = 1;
+			pre = cur;
+			cur = cur->right;
+		}
+		if(flag)
+		{
+			pre->right = cur->left;
+		}
+		else
+		{
+			pre->left = cur->left;
+		}
+		root->item = cur->item;
+		free(cur);
+		return root;
+	}
+
+	if(value < root->item) 
+	{
+		root->left = removeNodeFromTree(root->left, value);
+	}
+	else if(value > root->item)
+	{
+		root->right = removeNodeFromTree(root->right, value);
+	}
+
+
+	return root;
 }
 ///////////////////////////////////////////////////////////////////////////////
 

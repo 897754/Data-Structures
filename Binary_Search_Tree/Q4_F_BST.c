@@ -91,7 +91,46 @@ int main()
 
 void postOrderIterativeS1(BSTNode *root)
 {
-	 /* add your code here */
+	Stack s;
+	s.top = NULL;
+	push(&s, root);
+	BSTNode *cur = root;
+	BSTNode *temp = NULL;
+	while (s.top != NULL)
+	{
+		int flag = 0;
+		if(cur->right != NULL)
+		{
+			flag = 1;
+			temp = cur->right;
+			push(&s, temp);
+			cur->right = NULL;
+		}
+		if(cur->left != NULL)
+		{
+			flag = 1;
+			temp = cur->left;
+			push(&s, temp);
+			cur->left = NULL;
+		}
+		if(flag)
+		{
+			cur = temp;
+			continue;
+		}
+		else
+		{
+			cur = pop(&s);
+			if(cur == NULL)
+				break;
+			if(cur->left != NULL || cur->right != NULL)
+			{
+				push(&s, cur);
+				continue;
+			}
+			printf("%d ",cur->item);
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
